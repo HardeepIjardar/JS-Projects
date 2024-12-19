@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <style>
+        /* General Styling */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .card {
+            background-color: #1e1e1e;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+            padding: 30px;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #00e676;
+        }
+
+        label {
+            font-size: 1rem;
+            display: block;
+            margin-bottom: 5px;
+            color: #aaaaaa;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 2px solid #333333;
+            border-radius: 10px;
+            font-size: 1rem;
+            background-color: #333333;
+            color: #ffffff;
+        }
+
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #00e676;
+        }
+
+        button {
+            background-color: #00e676;
+            border: none;
+            border-radius: 10px;
+            color: #121212;
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        button:hover {
+            background-color: #00c853;
+        }
+
+        #message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            padding: 10px;
+            border-radius: 10px;
+            transition: all 0.3s;
+        }
+
+        .correct {
+            background-color: rgba(0, 230, 118, 0.2);
+            color: #00e676;
+        }
+
+        .too-high {
+            background-color: rgba(229, 57, 53, 0.2);
+            color: #e53935;
+        }
+
+        .too-low {
+            background-color: rgba(255, 167, 38, 0.2);
+            color: #ffa726;
+        }
+
+        .error {
+            background-color: rgba(244, 67, 54, 0.3);
+            color: #f44336;
+        }
+
+        .range {
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Guess the Number</h1>
+        <div>
+            <label for="startRange">Start of Range:</label>
+            <input type="number" id="startRange" placeholder="Start" min="1" max="100">
+            <label for="endRange">End of Range:</label>
+            <input type="number" id="endRange" placeholder="End" min="1" max="100">
+            <button id="setRange">Set Range</button>
+        </div>
+        <p class="range">Guess a number between <strong id="rangeLabel">1</strong> and <strong id="endRangeLabel">100</strong></p>
+        <input type="number" id="userGuess" placeholder="Your guess" min="1">
+        <button id="submitGuess">Submit Guess</button>
+        <div id="message"></div>
+    </div>
+
+    <script>
+        const userGuessInput = document.getElementById('userGuess');
+        const submitButton = document.getElementById('submitGuess');
+        const messageElement = document.getElementById('message');
+        const startRangeInput = document.getElementById('startRange');
+        const endRangeInput = document.getElementById('endRange');
+        const rangeLabel = document.getElementById('rangeLabel');
+        const endRangeLabel = document.getElementById('endRangeLabel');
+        const setRangeButton = document.getElementById('setRange');
+
+        let randomNumber, startRange, endRange;
+
+        function setRange() {
+            startRange = Number(startRangeInput.value);
+            endRange = Number(endRangeInput.value);
+
+            if (startRange >= endRange || startRange < 1 || endRange > 100) {
+                messageElement.textContent = "Invalid range! Start should be less than End, both between 1 and 100.";
+                messageElement.className = "error";
+                return;
+            }
+
+            randomNumber = Math.floor(Math.random() * (endRange - startRange + 1)) + startRange;
+            rangeLabel.textContent = startRange;
+            endRangeLabel.textContent = endRange;
+            messageElement.textContent = "Range set! Start guessing.";
+            messageElement.className = "";
+        }
+
+        function checkGuess() {
+            const userGuess = Number(userGuessInput.value);
+
+            if (!userGuess || userGuess < startRange || userGuess > endRange) {
+                messageElement.textContent = `Enter a number between ${startRange} and ${endRange}.`;
+                messageElement.className = "error";
+                return;
+            }
+
+            if (userGuess === randomNumber) {
+                messageElement.textContent = "🎉 Correct! You guessed it!";
+                messageElement.className = "correct";
+            } else if (userGuess > randomNumber) {
+                messageElement.textContent = "Too high! Try again.";
+                messageElement.className = "too-high";
+            } else {
+                messageElement.textContent = "Too low! Try again.";
+                messageElement.className = "too-low";
+            }
+
+            userGuessInput.value = '';
+            userGuessInput.focus();
+        }
+
+        setRangeButton.addEventListener('click', setRange);
+        submitButton.addEventListener('click', checkGuess);
+
+        userGuessInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                checkGuess();
+            }
+        });
+    </script>
+</body>
+</html>
