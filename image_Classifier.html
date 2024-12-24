@@ -96,14 +96,36 @@
             color: #b0bec5;
         }
 
-        .results p {
-            margin: 5px 0;
-        }
-
         #loading {
             display: none;
             font-size: 16px;
             color: #ff9800;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+            color: #b0bec5;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+
+        th {
+            background-color: #333;
+            font-weight: bold;
+        }
+
+        td {
+            background-color: #222;
+        }
+
+        tr:hover {
+            background-color: #333;
         }
     </style>
 </head>
@@ -161,7 +183,7 @@
             // Classify Image
             classifyBtn.addEventListener("click", async () => {
                 if (model && imagePreview.src) {
-                    resultsDiv.textContent = "Classifying...";
+                    resultsDiv.innerHTML = "<p>Classifying...</p>";
                     const predictions = await model.classify(imagePreview);
                     displayResults(predictions);
                 } else {
@@ -169,11 +191,27 @@
                 }
             });
 
-            // Display Results
+            // Display Results in a Table
             function displayResults(predictions) {
-                resultsDiv.innerHTML = predictions.map(prediction => 
-                    `<p><strong>${prediction.className}</strong>: ${(prediction.probability * 100).toFixed(2)}%</p>`
-                ).join('');
+                const tableHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Class</th>
+                                <th>Probability (%)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${predictions.map(prediction => 
+                                `<tr>
+                                    <td>${prediction.className}</td>
+                                    <td>${(prediction.probability * 100).toFixed(2)}</td>
+                                </tr>`
+                            ).join('')}
+                        </tbody>
+                    </table>
+                `;
+                resultsDiv.innerHTML = tableHTML;
             }
         });
     </script>
