@@ -3,217 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Recognition</title>
+    <title>Teachable Machine - Car Model</title>
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/mobilenet"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
     <style>
+        /* General Styles */
         body {
-            font-family: 'Arial', sans-serif;
-            background-color: #121212;
-            color: #e0e0e0;
+            font-family: Arial, sans-serif;
+            background-color: #121212; /* Dark theme background */
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
+            flex-direction: column;
             height: 100vh;
+            color: #e0e0e0; /* Light text color for dark background */
         }
 
-        .container {
-            background: #1e1e1e;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-            border-radius: 8px;
-            width: 400px;
-            padding: 20px;
-            text-align: center;
-        }
-
+        /* Heading Style */
         h1 {
-            font-size: 24px;
-            margin-bottom: 20px;
-            color: #ffffff;
+            color: #4CAF50; /* Bright green for heading */
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
         }
 
+        /* Instruction Text */
+        p {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #b0b0b0; /* Slightly dimmer for instructions */
+        }
+
+        /* File Input Style */
         input[type="file"] {
-            display: none;
-        }
-
-        label {
-            display: inline-block;
-            background-color: #2196f3;
-            color: white;
-            padding: 10px 20px;
+            padding: 0.5rem;
+            font-size: 1rem;
+            border: 1px solid #444;
             border-radius: 5px;
+            margin-bottom: 1rem;
             cursor: pointer;
-            margin-bottom: 15px;
-            transition: background-color 0.3s ease;
+            background-color: #1e1e1e; /* Dark background for input */
+            color: #e0e0e0; /* Light text color */
         }
 
-        label:hover {
-            background-color: #1769aa;
-        }
-
-        .image-wrapper {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 15px;
-        }
-
-        img {
-            width: 150px;
-            height: 150px;
-            border-radius: 8px;
-            display: none;
-            object-fit: cover;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-        }
-
-        button {
-            background-color: #4caf50;
-            color: white;
+        input[type="file"]::file-selector-button {
+            background-color: #4CAF50; /* Green for button */
+            color: #fff;
             border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            font-size: 16px;
+            padding: 0.4rem 0.8rem;
+            border-radius: 3px;
             cursor: pointer;
-            margin-top: 15px;
-            transition: background-color 0.3s ease;
         }
 
-        button:disabled {
-            background-color: #616161;
-            cursor: not-allowed;
+        input[type="file"]::file-selector-button:hover {
+            background-color: #45a049; /* Slightly darker green on hover */
         }
 
-        button:hover:enabled {
-            background-color: #388e3c;
+        /* Uploaded Image Style */
+        img {
+            max-width: 300px;
+            margin-top: 1rem;
+            border: 2px solid #444;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.6); /* Adjusted shadow for dark theme */
         }
 
-        .results {
-            margin-top: 20px;
-            font-size: 16px;
-            color: #b0bec5;
-        }
-
-        #loading {
-            display: none;
-            font-size: 16px;
-            color: #ff9800;
-        }
-
-        table {
-            width: 100%;
-            margin-top: 20px;
-            border-collapse: collapse;
-            color: #b0bec5;
-        }
-
-        th, td {
-            padding: 10px;
-            text-align: left;
-            border-bottom: 1px solid #444;
-        }
-
-        th {
-            background-color: #333;
-            font-weight: bold;
-        }
-
-        td {
-            background-color: #222;
-        }
-
-        tr:hover {
-            background-color: #333;
+        /* Result Text */
+        h2 {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            color: #4CAF50; /* Green for results */
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Image Recognition</h1>
-        <div id="loading">Loading model, please wait...</div>
-        <label for="image-input">Upload Image</label>
-        <input type="file" id="image-input" accept="image/*">
-        <div class="image-wrapper">
-            <img id="image-preview" alt="Preview">
-        </div>
-        <button id="classify-btn" disabled>Classify</button>
-        <div id="results" class="results"></div>
-    </div>
-
+    <h1>Car Model Detection</h1>
+    <p>Upload an image of a car</p>
+    <input type="file" id="upload-image" accept="image/*">
+    <img id="uploaded-image" alt="Uploaded Car Image" style="display: none;">
+    <h2 id="result"></h2>
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const imageInput = document.getElementById("image-input");
-            const classifyBtn = document.getElementById("classify-btn");
-            const imagePreview = document.getElementById("image-preview");
-            const resultsDiv = document.getElementById("results");
-            const loadingDiv = document.getElementById("loading");
+        const modelURL = "https://teachablemachine.withgoogle.com/models/DDyyJmZZq/model.json";
+        const metadataURL = "https://teachablemachine.withgoogle.com/models/DDyyJmZZq/metadata.json";
 
-            let model;
+        let model; 
+        const uploadInput = document.getElementById("upload-image");
+        const resultElement = document.getElementById("result");
+        const uploadedImage = document.getElementById("uploaded-image");
 
-            // Load MobileNet Model
+        // Load the Teachable Machine model
+        async function loadModel() {
             try {
-                loadingDiv.style.display = "block"; // Show loading message
-                console.log("Attempting to load MobileNet model...");
-                model = await mobilenet.load();
-                classifyBtn.disabled = false; // Enable button after model is loaded
-                console.log("Model Loaded");
+                model = await tmImage.load(modelURL, metadataURL);
+                console.log("Model loaded successfully.");
             } catch (error) {
-                console.error("Error loading the model:", error);
-                resultsDiv.textContent = "Failed to load the model. Please refresh the page or check your internet connection.";
-            } finally {
-                loadingDiv.style.display = "none"; // Hide loading message
+                console.error("Error loading model:", error);
+                resultElement.textContent = "Error loading model. Please refresh the page.";
+            }
+        }
+
+        // Classify the uploaded image
+        async function classifyImage() {
+            if (!model) {
+                resultElement.textContent = "Model not loaded yet. Please wait.";
+                return;
             }
 
-            // Handle Image Upload
-            imageInput.addEventListener("change", (event) => {
-                const file = event.target.files[0];
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = (e) => {
-                        imagePreview.src = e.target.result;
-                        imagePreview.style.display = "block";
-                        resultsDiv.textContent = ""; // Clear previous results
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
+            const prediction = await model.predict(uploadedImage);
+            const bestPrediction = prediction.reduce((prev, current) =>
+                prev.probability > current.probability ? prev : current
+            );
 
-            // Classify Image
-            classifyBtn.addEventListener("click", async () => {
-                if (model && imagePreview.src) {
-                    resultsDiv.innerHTML = "<p>Classifying...</p>";
-                    const predictions = await model.classify(imagePreview);
-                    displayResults(predictions);
-                } else {
-                    resultsDiv.textContent = "Please upload an image first.";
-                }
-            });
+            resultElement.textContent = `Prediction: ${bestPrediction.className}, Confidence: ${(
+                bestPrediction.probability * 100
+            ).toFixed(2)}%`;
+        }
 
-            // Display Results in a Table
-            function displayResults(predictions) {
-                const tableHTML = `
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Class</th>
-                                <th>Probability (%)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            ${predictions.map(prediction => 
-                                `<tr>
-                                    <td>${prediction.className}</td>
-                                    <td>${(prediction.probability * 100).toFixed(2)}</td>
-                                </tr>`
-                            ).join('')}
-                        </tbody>
-                    </table>
-                `;
-                resultsDiv.innerHTML = tableHTML;
-            }
+        // Event listener for image upload
+        uploadInput.addEventListener("change", (event) => {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                uploadedImage.src = reader.result;
+                uploadedImage.style.display = "block";
+                uploadedImage.onload = classifyImage;
+            };
+            reader.readAsDataURL(file);
         });
+
+        // Load the model when the page loads
+        window.addEventListener("load", loadModel);
     </script>
 </body>
 </html>
