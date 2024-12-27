@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,40 +8,43 @@
     <style>
         /* General Styling */
         body {
-            font-family: 'Arial', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f6f9;
-            color: #333;
+            background-color: #121212; /* Deep Space Black */
+            color: #E4E4E4; /* Off-white text for readability */
         }
 
+        /* Header Styling */
         header {
-            background-color: #2c3e50;
+            background-color: #1F2A44; /* Dark Blue header */
             color: white;
             padding: 20px;
-            text-align: center;
+            text-align: left;
+            padding-left: 30px; /* Add some left padding */
         }
 
         .name-tag {
             font-size: 32px;
             font-weight: bold;
+            color: #fff; /* White color for name */
         }
 
         /* Intro Section */
         .intro {
             text-align: center;
             padding: 40px 20px;
-            background-color: #ecf0f1;
+            background-color: #1C2A3B; /* Dark blue-gray for intro */
         }
 
         .intro h1 {
             font-size: 36px;
-            color: #34495e;
+            color: #E4E4E4; /* Light text */
         }
 
         .intro p {
             font-size: 18px;
-            color: #7f8c8d;
+            color: #B0B0B0; /* Light gray text */
         }
 
         /* Projects Section */
@@ -52,33 +56,34 @@
         }
 
         .project-card {
-            background-color: white;
+            background-color: #1C2A3B; /* Dark blue-gray for cards */
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             text-align: center;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
+            color: #E4E4E4; /* Light text for card content */
         }
 
         .project-card:hover {
             transform: translateY(-10px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
         }
 
         .project-card h2 {
             font-size: 24px;
-            color: #2c3e50;
+            color: #4F9CF3; /* Electric Blue for titles */
         }
 
         .project-card p {
             font-size: 16px;
-            color: #7f8c8d;
+            color: #B0B0B0; /* Light gray text */
             margin-bottom: 20px;
         }
 
         .view-project {
             display: inline-block;
-            background-color: #3498db;
+            background-color: #4F9CF3; /* Electric Blue for buttons */
             color: white;
             padding: 10px 20px;
             border-radius: 5px;
@@ -88,30 +93,28 @@
         }
 
         .view-project:hover {
-            background-color: #2980b9;
+            background-color: #357ABD; /* Darker blue on hover */
         }
 
         /* Footer Section */
         footer {
-            background-color: #34495e;
+            background-color: #1F2A44; /* Dark Blue footer */
             color: white;
             text-align: center;
             padding: 20px;
-            position: relative;
-            bottom: 0;
-            width: 100%;
         }
-
     </style>
 </head>
+
 <body>
+
     <header>
         <div class="name-tag">Hardeep Ijardar</div>
     </header>
 
     <section class="intro">
         <h1>Welcome to My JavaScript Projects</h1>
-        <p>Here are the four projects I have worked on using JavaScript. Feel free to explore each one!</p>
+        <p>Explore the projects I've worked on using JavaScript. Each one showcases unique features and functionality. Dive in!</p>
     </section>
 
     <section class="projects">
@@ -143,7 +146,7 @@
             <a href="3D_calculator.html" class="view-project">View Project</a>
         </div>
 
-       <!-- Project 5: Dice Game -->
+        <!-- Project 5: Dice Game -->
         <div class="project-card" id="dice-game-card">
             <h2>Dice Game</h2>
             <p>This project is a fun game where players roll dice to achieve certain objectives or compete for the highest score.</p>
@@ -178,6 +181,12 @@
             <a href="image_Classifier.html" class="view-project">View Project</a>
         </div>
 
+        <!-- Project 10: Face Recognition (Smart Attendance System) -->
+        <div class="project-card" id="face-recognition-card">
+            <h2>Smart Attendance System</h2>
+            <p>This project uses facial recognition technology to scan students' faces and automatically mark them as present or absent.</p>
+            <a href="face_recognigation.html" class="view-project">View Project</a>
+        </div>
     </section>
 
     <footer>
@@ -186,52 +195,29 @@
 
     <script>
         // Smooth Scroll Effect for Anchor Links
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
         });
-    });
-});
 
-// Add some interactive functionality to the project cards (hover effect)
-const projectCards = document.querySelectorAll('.project-card');
+        // Add some interactive functionality to the project cards (hover effect)
+        const projectCards = document.querySelectorAll('.project-card');
 
-projectCards.forEach(card => {
-    card.addEventListener('mouseenter', function () {
-        card.style.transform = 'scale(1.05)';
-        card.style.transition = 'transform 0.3s ease';
-    });
+        projectCards.forEach(card => {
+            card.addEventListener('mouseenter', function () {
+                card.style.transform = 'scale(1.05)';
+                card.style.transition = 'transform 0.3s ease';
+            });
 
-    card.addEventListener('mouseleave', function () {
-        card.style.transform = 'scale(1)';
-    });
-});
-
-// Optional: Add some animations when the page is loaded
-window.addEventListener('load', () => {
-    const projectCards = document.querySelectorAll('.project-card');
-    projectCards.forEach((card, index) => {
-        card.style.animation = `fadeIn 1s ease-out ${index * 0.2}s forwards`;
-    });
-});
-
-// Adding keyframe animation for fading in project cards
-const styleSheet = document.styleSheets[0];
-styleSheet.insertRule(`
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-`, styleSheet.cssRules.length);
-
+            card.addEventListener('mouseleave', function () {
+                card.style.transform = 'scale(1)';
+            });
+        });
     </script>
 </body>
+
 </html>
