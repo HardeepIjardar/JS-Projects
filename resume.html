@@ -1,87 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simple Dynamic Resume</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f9;
-      color: #333;
-    }
-    .resume-container {
-      max-width: 600px;
-      margin: 20px auto;
-      background: #fff;
-      padding: 20px;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-      border-radius: 10px;
-    }
-    h1, h2, h3 {
-      margin: 0;
-      padding-bottom: 5px;
-    }
-    p, li {
-      margin: 5px 0;
-    }
-    ul {
-      padding-left: 20px;
-    }
-    section {
-      margin-bottom: 20px;
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ijardar Hardeep Kuldeep - Resume</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .resume-main {
+            max-width: 900px;
+            margin: 40px auto;
+            background: var(--gradient-primary);
+            padding: 40px 32px;
+            border-radius: 14px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        .resume-header {
+            text-align: center;
+            margin-bottom: 18px;
+        }
+        .resume-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .resume-header .contact-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 18px;
+            flex-wrap: wrap;
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+        .resume-header .contact-row a {
+            color: var(--accent-color);
+            text-decoration: none;
+            margin-left: 4px;
+        }
+        .resume-header .contact-row i {
+            margin-right: 4px;
+        }
+        .section-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            border-bottom: 2px solid var(--accent-color);
+            margin-top: 32px;
+            margin-bottom: 10px;
+            padding-bottom: 4px;
+            letter-spacing: 0.5px;
+        }
+        .edu-table, .achieve-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+        }
+        .edu-table td, .edu-table th, .achieve-table td, .achieve-table th {
+            padding: 4px 8px;
+            vertical-align: top;
+        }
+        .edu-table th, .achieve-table th {
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        .edu-table tr:not(:last-child) td {
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+        }
+        .project-section ul, .skills-list, .achieve-list {
+            margin: 0 0 0 18px;
+            padding: 0;
+        }
+        .project-section ul li, .skills-list li, .achieve-list li {
+            margin-bottom: 6px;
+            line-height: 1.6;
+        }
+        .project-section a {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+        .skills-list {
+            columns: 2;
+            margin-bottom: 0;
+        }
+        .achieve-list {
+            margin-bottom: 0;
+        }
+        .achieve-title {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        .achieve-date {
+            float: right;
+            color: var(--accent-color);
+            font-weight: 500;
+        }
+        .achieve-link {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+        @media (max-width: 700px) {
+            .resume-main {
+                padding: 16px 4vw;
+            }
+            .skills-list {
+                columns: 1;
+            }
+        }
+    </style>
 </head>
 <body>
-  <div class="resume-container">
     <header>
-      <h1 id="name">[Name]</h1>
-      <p id="title">[Title]</p>
+        <div class="name-tag">
+            <a href="index.html">
+                <img src="media/logo.png" alt="Logo">
+            </a>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="resume.html">Resume</a>
+            <a href="feedback.html">Feedback</a>
+        </nav>
     </header>
-    <hr>
-    <section>
-      <h2>Contact</h2>
-      <p id="email"></p>
-      <p id="phone"></p>
-    </section>
-    <section>
-      <h2>Experience</h2>
-      <h3 id="company"></h3>
-      <p id="role"></p>
-      <p id="duration"></p>
-    </section>
-    <hr>
-    <section>
-      <h2>Education</h2>
-      <h3 id="degree"></h3>
-      <p id="institution"></p>
-      <p id="education-duration"></p>
-    </section>
-  </div>
-  <script>
-    // Simple Resume Data
-    document.getElementById("name").innerText = "Hardeep Ijardar";
-    document.getElementById("title").innerText = "Web Developer";
-
-    // Contact
-    document.getElementById("email").innerText = "Email: hardeepijardar@gmail.com";
-    document.getElementById("phone").innerText = "Phone: +91 9328231035";
-
-
-
-    // Experience
-    document.getElementById("company").innerText = "TechCorp";
-    document.getElementById("role").innerText = "Frontend Developer";
-    document.getElementById("duration").innerText = "Jan 2025 - Present";
-
-    // Education
-    document.getElementById("degree").innerText = "Bachelor of Information and technology";
-    document.getElementById("institution").innerText = "Parul Institute of Engineering and Technology";
-    document.getElementById("education-duration").innerText = "2022 - 2026";
-  </script>
+    <main>
+        <div class="resume-main">
+            <div class="resume-header">
+                <h1>Ijardar Hardeep Kuldeep</h1>
+                <div class="contact-row">
+                    <span><i class="fas fa-phone"></i>+91 9328231035</span>
+                    <span><i class="fas fa-envelope"></i><a href="mailto:hardeepijardar@gmail.com">hardeepijardar@gmail.com</a></span>
+                    <a href="https://github.com/hardeepijardar" target="_blank"><i class="fab fa-github"></i>Github</a>
+                    <a href="https://linkedin.com/in/hardeepijardar" target="_blank"><i class="fab fa-linkedin"></i>LinkedIN</a>
+                </div>
+            </div>
+            <div class="section-title">Education</div>
+            <table class="edu-table">
+                <tr>
+                    <td><b>Parul University, Vadodara (Gujarat)</b><br><i>Bachelor of Technology in Information Technology</i></td>
+                    <td style="text-align:right; min-width:120px;">July 2022 - Present<br>CGPA – 7.53/10</td>
+                </tr>
+                <tr>
+                    <td>12<sup>th</sup> – GSEB<br>Radiant English Academy, Surat (Gujarat)</td>
+                    <td style="text-align:right;">2019 – 2022<br><b>Percentage – 43%</b></td>
+                </tr>
+                <tr>
+                    <td>10<sup>th</sup> – CBSE<br>Radiant English Academy, Surat (Gujarat)</td>
+                    <td style="text-align:right;">2018 – 2019<br><b>Percentage – 66.66%</b></td>
+                </tr>
+            </table>
+            <div class="section-title">Projects</div>
+            <div class="project-section">
+                <ul>
+                    <li><b>Portfolio Website:</b> (<a href="https://www.hardeepijardar.com" target="_blank">www.hardeepijardar.com</a>)<br>
+                        <i>HTML, CSS, and JavaScript</i>
+                        <ul>
+                            <li><b>Comprehensive Portfolio Showcase:</b> Demonstrates a range of projects, including dynamic JavaScript applications and UI/UX Designs, highlighting versatility in Web and App Development.</li>
+                            <li><b>Professional Blog Contributions:</b> Includes insightful blog posts on topics like AI advancements, API development, showcasing thought leadership and contributions learning.</li>
+                            <li><b>Responsive Design:</b> Ensures an optimal user experience across various devices through a responsive and user-friendly interface.</li>
+                            <li><b>Active Community Engagement:</b> Links to GitHub repositories and participation in collaborative projects, demonstrating a commitment to open-source contributions and community involvement.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="section-title">Skills</div>
+            <ul class="skills-list">
+                <li><b>Frontend:</b> HTML | CSS | Tailwind CSS | JavaScript</li>
+                <li><b>Backend:</b> Node JS | Express JS | PHP</li>
+                <li><b>Database:</b> MongoDB | My SQL</li>
+                <li><b>Languages:</b> C | Java | Python</li>
+                <li><b>Tools:</b> Power BI | Android Studio | Tableau</li>
+                <li><b>Other:</b> GitHub | Deployment | Problem Solving</li>
+            </ul>
+            <div class="section-title">Achievements and Certifications</div>
+            <ul class="achieve-list">
+                <li>
+                    <span class="achieve-title">Deloitte Data Analytics Job Simulation (<a class="achieve-link" href="#" target="_blank">Certificate</a>)</span>
+                    <span class="achieve-date">April - 2025</span><br>
+                    <i>Issued by Deloitte via Forage</i>
+                    <ul>
+                        <li>Completed real-world tasks involving data analysis and forensic technology.</li>
+                        <li>Gained experience in interpreting data, identifying inconsistencies, and preparing analytical reports.</li>
+                        <li>Enhanced understanding of data-driven decision-making in a professional business environment.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="achieve-title">Android Application Development (<a class="achieve-link" href="#" target="_blank">Certificate</a>)</span>
+                    <span class="achieve-date">March - 2024</span>
+                    <ul>
+                        <li>Can develop Android Applications using Android Studio Using Java and Kotlin.</li>
+                        <li>Learned UI/UX designing principles and implementing responsive layouts.</li>
+                        <li>Worked with API's, Firebase Database for Backend integration.</li>
+                        <li>Implemented Debugging, Testing, and Optimization Techniques.</li>
+                        <li>Integration of RESTful API's for seamless functionality of web applications</li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="achieve-title">PU Code Hackathon (<a class="achieve-link" href="#" target="_blank">Certificate</a>)</span>
+                    <span class="achieve-date">March – 2024</span>
+                    <ul>
+                        <li>Developed NutriPal, a nutrition recommendation website.</li>
+                        <li>Utilized user stats (height and age) to calculate BMI.</li>
+                        <li>Provided personalized diet plans based on user's food preferences.</li>
+                        <li>Improved user engagement by suggesting diet plans with preferred ingredients.</li>
+                        <li>Web app development, API integration, and data-driven recommendations.</li>
+                    </ul>
+                </li>
+                <li>
+                    <span class="achieve-title">Web Development (<a class="achieve-link" href="#" target="_blank">Certificate</a>)</span>
+                    <span class="achieve-date">May - 2023</span>
+                    <ul>
+                        <li>Proficient in HTML, CSS, and JavaScript for front-end development.</li>
+                        <li>Hands-on experience with frameworks like React JS, Express JS, Node JS, Tailwind CSS, Bootstrap</li>
+                        <li>Develop responsive and user-friendly web applications</li>
+                    </ul>
+                </li>
+            </ul>
+        </div>
+    </main>
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+            <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+            <a href="mailto:your.email@example.com">Email</a>
+        </div>
+        <p>© 2024 Your Name. All rights reserved.</p>
+    </footer>
 </body>
 </html>

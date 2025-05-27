@@ -4,27 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dice Roller Game: Two Players</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* General Styling */
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Arial', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            height: 100vh;
-            background: linear-gradient(to right, #ff9a9e, #fad0c4, #fbc2eb);
-            color: #fff;
-            text-align: center;
-        }
-
-        h1 {
-            font-size: 3rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        }
-
         .dice-container {
             margin: 20px auto;
             width: 100px;
@@ -32,47 +14,24 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background-color: #fff;
-            color: #333;
+            background: var(--gradient-primary);
+            color: var(--text-primary);
             font-size: 4rem;
             border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
             cursor: pointer;
             animation: glow 2s infinite alternate;
             transition: transform 0.3s ease-in-out;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         @keyframes glow {
             0% {
-                box-shadow: 0 0 10px #ff9a9e, 0 0 20px #fad0c4, 0 0 30px #fbc2eb;
+                box-shadow: 0 0 10px var(--accent-color), 0 0 20px rgba(79, 70, 229, 0.3);
             }
             100% {
-                box-shadow: 0 0 20px #ff7eb3, 0 0 30px #fcb1d6, 0 0 40px #fce4ec;
+                box-shadow: 0 0 20px var(--accent-color), 0 0 30px rgba(79, 70, 229, 0.5);
             }
-        }
-
-        #rollButton {
-            background-color: #fff;
-            color: #333;
-            border: none;
-            padding: 12px 24px;
-            font-size: 1.2rem;
-            border-radius: 50px;
-            cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        #rollButton:hover {
-            background-color: #ff9a9e;
-            color: #fff;
-            transform: scale(1.1);
-        }
-
-        #output {
-            margin-top: 20px;
-            font-size: 1.5rem;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.4);
         }
 
         @keyframes shake {
@@ -85,43 +44,90 @@
         table {
             margin-top: 20px;
             border-collapse: collapse;
-            width: 80%;
-            background-color: rgba(255, 255, 255, 0.9);
-            color: #333;
+            width: 100%;
+            background: var(--gradient-primary);
+            color: var(--text-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
         }
 
         th, td {
-            padding: 10px;
+            padding: 12px;
             text-align: center;
-            border: 1px solid #ddd;
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         th {
-            background-color: #ff9a9e;
-            color: #fff;
+            background: var(--gradient-accent);
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        #output {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        #scoreboard {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: var(--text-secondary);
         }
     </style>
 </head>
 <body>
-    <h1>🎲 Two-Player Dice Roller 🎲</h1>
-    <div id="dice" class="dice-container" aria-live="polite" aria-atomic="true">⚀</div>
-    <button id="rollButton">Roll the Dice</button>
-    <div id="output"></div>
-    <div id="scoreboard" style="margin-top: 20px; font-size: 1.2rem;"></div>
+    <header>
+        <div class="name-tag">
+            <a href="index.html">
+                <img src="media/logo.png" alt="Logo">
+            </a>
+        </div>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="resume.html">Resume</a>
+            <a href="feedback.html">Feedback</a>
+        </nav>
+    </header>
 
-    <!-- Table for Dice Roll History -->
-    <table id="historyTable">
-        <thead>
-            <tr>
-                <th>Roll #</th>
-                <th>Player</th>
-                <th>Dice Value</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Dynamic Rows will be added here -->
-        </tbody>
-    </table>
+    <main>
+        <a href="index.html" class="back-button">← Back to Projects</a>
+        
+        <div class="project-container">
+            <h1>🎲 Two-Player Dice Roller 🎲</h1>
+            <p>Roll the dice and compete with a friend in this exciting two-player game!</p>
+            
+            <div class="card">
+                <div id="dice" class="dice-container" aria-live="polite" aria-atomic="true">⚀</div>
+                <button id="rollButton">Roll the Dice</button>
+                <div id="output"></div>
+                <div id="scoreboard"></div>
+
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Roll #</th>
+                            <th>Player</th>
+                            <th>Dice Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Dynamic Rows will be added here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+            <a href="https://linkedin.com/in/yourusername" target="_blank">LinkedIn</a>
+            <a href="mailto:your.email@example.com">Email</a>
+        </div>
+        <p>© 2024 Your Name. All rights reserved.</p>
+    </footer>
 
     <script>
         // Game state
