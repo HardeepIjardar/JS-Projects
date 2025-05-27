@@ -3,297 +3,416 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>3D Geometry Calculator</title>
+    <title>3D Object Calculator - Hardeep Ijardar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(135deg, #6dd5ed, #2193b0);
-            color: #333;
-            min-height: 100vh;
+        .shape-selector-container {
+            position: relative;
+            margin-bottom: 30px;
+        }
+
+        .shape-selector {
             display: flex;
-            flex-direction: column;
-        }
-
-        .image{
-            height: 50%;
-            width: 70%;
-        }
-
-        header {
-            background: rgba(0, 0, 0, 0.6);
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 26px;
-            font-weight: bold;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        }
-
-        .container {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Three items per row */
             gap: 20px;
-            padding: 20px;
-            margin: 20px;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            padding: 10px 0;
+            margin: 0 40px;
         }
 
-        .section {
-            background-color: rgba(255, 255, 255, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        .shape-option {
+            background: var(--gradient-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             padding: 20px;
             text-align: center;
-            transition: transform 0.3s ease;
-            height: 680px;
-        }
-
-        .section:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
-        }
-
-        h2 {
-            color: #2c3e50;
-            margin-bottom: 15px;
-        }
-
-        input {
-            padding: 10px;
-            margin: 8px 0;
-            border: 2px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
-            width: 80%;
-            outline: none;
-        }
-
-        input:focus {
-            border-color: #3498db;
-        }
-
-        button {
-            background: #3498db;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: all 0.3s ease;
+            min-width: 150px;
+            flex-shrink: 0;
         }
 
-        button:hover {
-            background: #2980b9;
+        .shape-option:hover, .shape-option.active {
+            border-color: var(--accent-color);
+            transform: translateY(-5px);
         }
 
-        .result {
-            margin-top: 10px;
-            font-weight: bold;
-            color: #2c3e50;
+        .shape-option img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 10px;
         }
 
-        .formula {
-            margin-top: 10px;
-            font-size: 14px;
-            color: #555;
-            font-style: italic;
+        .shape-option h3 {
+            font-size: 16px;
+            margin: 0;
         }
 
+        .scroll-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: var(--gradient-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-primary);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .scroll-button:hover {
+            background: var(--accent-color);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .scroll-left {
+            left: 0;
+        }
+
+        .scroll-right {
+            right: 0;
+        }
+
+        .input-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .result-card {
+            background: var(--gradient-primary);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        .result-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
-
 <header>
-    3D Geometry Calculator - 9 Shapes
+        <div class="name-tag">
+            <img src="media/logo.png" alt="Hardeep Ijardar Logo">
+        </div>
+        <nav>
+            <a href="index.html#projects">Projects</a>
+            <a href="https://www.hardeepijardar.com/#about" target="_blank">About</a>
+            <a href="https://www.hardeepijardar.com/#contact" target="_blank">Contact</a>
+        </nav>
 </header>
 
-<div class="container">
-    <!-- Cube Section -->
-    <div class="section">
-        <img class="image" src="./media/cube.png">
-        <h2>Cube</h2>
-        <input type="number" id="cubeSide" placeholder="Side Length" />
-        <button onclick="calculateCube()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="cubeVolumeFormula"></span>, Surface Area = <span id="cubeSurfaceAreaFormula"></span></div>
-        <div class="result" id="cubeResult"></div>
+    <main>
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Projects
+        </a>
+
+        <div class="project-container fade-in">
+            <h1>3D Object Calculator</h1>
+            <p>Calculate the volume and surface area of various 3D objects with this interactive calculator.</p>
+
+            <div class="shape-selector-container">
+                <button class="scroll-button scroll-left" onclick="scrollShapes('left')">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+                <div class="shape-selector" id="shapeSelector">
+                    <div class="shape-option active" onclick="selectShape('cube')">
+                        <img src="media/cube.png" alt="Cube">
+                        <h3>Cube</h3>
+                    </div>
+                    <div class="shape-option" onclick="selectShape('sphere')">
+                        <img src="media/sphere.png" alt="Sphere">
+                        <h3>Sphere</h3>
+                    </div>
+                    <div class="shape-option" onclick="selectShape('cylinder')">
+                        <img src="media/cylinder.png" alt="Cylinder">
+                        <h3>Cylinder</h3>
+                    </div>
+                    <div class="shape-option" onclick="selectShape('cone')">
+                        <img src="media/cone.png" alt="Cone">
+                        <h3>Cone</h3>
+                    </div>
+                    <div class="shape-option" onclick="selectShape('pyramid')">
+                        <img src="media/pyramid.png" alt="Pyramid">
+                        <h3>Pyramid</h3>
+                    </div>
+                    <div class="shape-option" onclick="selectShape('hemisphere')">
+                        <img src="media/hemisphere.png" alt="Hemisphere">
+                        <h3>Hemisphere</h3>
+    </div>
+                    <div class="shape-option" onclick="selectShape('rectangular-prism')">
+                        <img src="media/rectangular-prism.png" alt="Rectangular Prism">
+                        <h3>Rect. Prism</h3>
+    </div>
+                    <div class="shape-option" onclick="selectShape('tetrahedron')">
+                        <img src="media/tetrahedron.png" alt="Tetrahedron">
+                        <h3>Tetrahedron</h3>
+    </div>
+                    <div class="shape-option" onclick="selectShape('torus')">
+                        <img src="media/torus.png" alt="Torus">
+                        <h3>Torus</h3>
+    </div>
+    </div>
+                <button class="scroll-button scroll-right" onclick="scrollShapes('right')">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
     </div>
 
-    <!-- Sphere Section -->
-    <div class="section">
-        <img class="image" src="./media/sphere.png" alt="">
-        <h2>Sphere</h2>
-        <input type="number" id="sphereRadius" placeholder="Radius" />
-        <button onclick="calculateSphere()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="sphereVolumeFormula"></span>, Surface Area = <span id="sphereSurfaceAreaFormula"></span></div>
-        <div class="result" id="sphereResult"></div>
+            <div class="card">
+                <div id="inputFields">
+                    <!-- Input fields will be dynamically generated here -->
     </div>
 
-    <!-- Cylinder Section -->
-    <div class="section">
-        <img class="image" src="./media/cylinder.png" alt="">
-        <h2>Cylinder</h2>
-        <input type="number" id="cylinderRadius" placeholder="Radius" />
-        <input type="number" id="cylinderHeight" placeholder="Height" />
-        <button onclick="calculateCylinder()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="cylinderVolumeFormula"></span>, Surface Area = <span id="cylinderSurfaceAreaFormula"></span></div>
-        <div class="result" id="cylinderResult"></div>
-    </div>
+                <button onclick="calculate()" class="fade-in">
+                    <i class="fas fa-calculator"></i> Calculate
+                </button>
 
-    <!-- Cone Section -->
-    <div class="section">
-        <img class="image" src="./media/cone.png" alt="">
-        <h2>Cone</h2>
-        <input type="number" id="coneRadius" placeholder="Radius" />
-        <input type="number" id="coneHeight" placeholder="Height" />
-        <button onclick="calculateCone()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="coneVolumeFormula"></span>, Surface Area = <span id="coneSurfaceAreaFormula"></span></div>
-        <div class="result" id="coneResult"></div>
+                <div class="result-card fade-in" id="result" style="display: none;">
+                    <h3>Results</h3>
+                    <div class="result-value" id="volume"></div>
+                    <div class="result-value" id="surfaceArea"></div>
     </div>
-
-    <!-- Rectangular Prism Section -->
-    <div class="section">
-        <img class="image" src="./media/rectangular-prism.png" alt="">
-        <h2>Rectangular Prism</h2>
-        <input type="number" id="rectPrismLength" placeholder="Length" />
-        <input type="number" id="rectPrismWidth" placeholder="Width" />
-        <input type="number" id="rectPrismHeight" placeholder="Height" />
-        <button onclick="calculateRectPrism()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="rectPrismVolumeFormula"></span>, Surface Area = <span id="rectPrismSurfaceAreaFormula"></span></div>
-        <div class="result" id="rectPrismResult"></div>
-    </div>
-
-    <!-- Pyramid Section -->
-    <div class="section">
-        <img class="image" src="./media/pyramid.png" alt="">
-        <h2>Pyramid</h2>
-        <input type="number" id="pyramidBase" placeholder="Base Length" />
-        <input type="number" id="pyramidHeight" placeholder="Height" />
-        <button onclick="calculatePyramid()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="pyramidVolumeFormula"></span>, Surface Area = <span id="pyramidSurfaceAreaFormula"></span></div>
-        <div class="result" id="pyramidResult"></div>
-    </div>
-
-    <!-- Tetrahedron Section -->
-    <div class="section">
-        <img class="image" src="./media/tetrahedron.png" alt="">
-        <h2>Tetrahedron</h2>
-        <input type="number" id="tetrahedronEdge" placeholder="Edge Length" />
-        <button onclick="calculateTetrahedron()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="tetrahedronVolumeFormula"></span></div>
-        <div class="result" id="tetrahedronResult"></div>
-    </div>
-
-    <!-- Hemisphere Section -->
-    <div class="section">
-        <img class="image" src="./media/hemisphere.png" alt="">
-        <h2>Hemisphere</h2>
-        <input type="number" id="hemisphereRadius" placeholder="Radius" />
-        <button onclick="calculateHemisphere()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="hemisphereVolumeFormula"></span>, Surface Area = <span id="hemisphereSurfaceAreaFormula"></span></div>
-        <div class="result" id="hemisphereResult"></div>
-    </div>
-
-    <!-- Torus Section -->
-    <div class="section">
-        <img class="image" src="./media/torus.png" alt="">
-        <h2>Torus</h2>
-        <input type="number" id="torusRadius" placeholder="Radius" />
-        <input type="number" id="torusTubeRadius" placeholder="Tube Radius" />
-        <button onclick="calculateTorus()">Calculate</button>
-        <div class="formula">Formula: Volume = <span id="torusVolumeFormula"></span>, Surface Area = <span id="torusSurfaceAreaFormula"></span></div>
-        <div class="result" id="torusResult"></div>
     </div>
 </div>
+    </main>
+
+    <footer>
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 Hardeep Ijardar. All rights reserved.</p>
+    </footer>
 
 <script>
-    function calculateCube() {
-        const side = document.getElementById("cubeSide").value;
-        const volume = Math.pow(side, 3);
-        const surfaceArea = 6 * Math.pow(side, 2);
-        document.getElementById("cubeResult").innerText = `Volume: ${volume}, Surface Area: ${surfaceArea}`;
-        document.getElementById("cubeVolumeFormula").innerText = `side³`;
-        document.getElementById("cubeSurfaceAreaFormula").innerText = `6 * side²`;
-    }
+        let currentShape = 'cube';
+        const shapeSelector = document.getElementById('shapeSelector');
+        const scrollAmount = 280; // Adjust based on your shape-option width + gap
 
-    function calculateSphere() {
-        const radius = document.getElementById("sphereRadius").value;
-        const volume = (4/3) * Math.PI * Math.pow(radius, 3);
-        const surfaceArea = 4 * Math.PI * Math.pow(radius, 2);
-        document.getElementById("sphereResult").innerText = `Volume: ${volume}, Surface Area: ${surfaceArea}`;
-        document.getElementById("sphereVolumeFormula").innerText = `4/3 * π * radius³`;
-        document.getElementById("sphereSurfaceAreaFormula").innerText = `4 * π * radius²`;
-    }
+        function scrollShapes(direction) {
+            const currentScroll = shapeSelector.scrollLeft;
+            shapeSelector.scrollLeft = direction === 'left' 
+                ? currentScroll - scrollAmount 
+                : currentScroll + scrollAmount;
+        }
 
-    function calculateCylinder() {
-        const radius = document.getElementById("cylinderRadius").value;
-        const height = document.getElementById("cylinderHeight").value;
-        const volume = Math.PI * Math.pow(radius, 2) * height;
-        const surfaceArea = 2 * Math.PI * radius * (radius + height);
-        document.getElementById("cylinderResult").innerText = `Volume: ${volume}, Surface Area: ${surfaceArea}`;
-        document.getElementById("cylinderVolumeFormula").innerText = `π * radius² * height`;
-        document.getElementById("cylinderSurfaceAreaFormula").innerText = `2 * π * radius * (radius + height)`;
-    }
+        function selectShape(shape) {
+            currentShape = shape;
+            document.querySelectorAll('.shape-option').forEach(option => {
+                option.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            updateInputFields();
+        }
 
-    function calculateCone() {
-        const radius = document.getElementById("coneRadius").value;
-        const height = document.getElementById("coneHeight").value;
-        const volume = (1/3) * Math.PI * Math.pow(radius, 2) * height;
-        const slantHeight = Math.sqrt(Math.pow(radius, 2) + Math.pow(height, 2));
-        const surfaceArea = Math.PI * radius * (radius + slantHeight);
-        document.getElementById("coneResult").innerText = `Volume: ${volume}, Surface Area: ${surfaceArea}`;
-        document.getElementById("coneVolumeFormula").innerText = `1/3 * π * radius² * height`;
-        document.getElementById("coneSurfaceAreaFormula").innerText = `π * radius * (radius + slantHeight)`;
-    }
+        function updateInputFields() {
+            const inputFields = document.getElementById('inputFields');
+            inputFields.innerHTML = '';
 
-    function calculateRectPrism() {
-        const length = document.getElementById("rectPrismLength").value;
-        const width = document.getElementById("rectPrismWidth").value;
-        const height = document.getElementById("rectPrismHeight").value;
-        const volume = length * width * height;
-        const surfaceArea = 2 * (length * width + width * height + height * length);
-        document.getElementById("rectPrismResult").innerText = `Volume: ${volume}, Surface Area: ${surfaceArea}`;
-        document.getElementById("rectPrismVolumeFormula").innerText = `length * width * height`;
-        document.getElementById("rectPrismSurfaceAreaFormula").innerText = `2 * (length * width + width * height + height * length)`;
-    }
+            switch(currentShape) {
+                case 'cube':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="side">Side Length</label>
+                                <input type="number" id="side" placeholder="Enter side length" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'sphere':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="radius">Radius</label>
+                                <input type="number" id="radius" placeholder="Enter radius" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'cylinder':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="radius">Radius</label>
+                                <input type="number" id="radius" placeholder="Enter radius" step="any">
+                            </div>
+                            <div>
+                                <label for="height">Height</label>
+                                <input type="number" id="height" placeholder="Enter height" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'cone':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="radius">Radius</label>
+                                <input type="number" id="radius" placeholder="Enter radius" step="any">
+                            </div>
+                            <div>
+                                <label for="height">Height</label>
+                                <input type="number" id="height" placeholder="Enter height" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'pyramid':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="base">Base Length</label>
+                                <input type="number" id="base" placeholder="Enter base length" step="any">
+                            </div>
+                            <div>
+                                <label for="height">Height</label>
+                                <input type="number" id="height" placeholder="Enter height" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'hemisphere':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="radius">Radius</label>
+                                <input type="number" id="radius" placeholder="Enter radius" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'rectangular-prism':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="length">Length</label>
+                                <input type="number" id="length" placeholder="Enter length" step="any">
+                            </div>
+                            <div>
+                                <label for="width">Width</label>
+                                <input type="number" id="width" placeholder="Enter width" step="any">
+                            </div>
+                            <div>
+                                <label for="height">Height</label>
+                                <input type="number" id="height" placeholder="Enter height" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'tetrahedron':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="edge">Edge Length</label>
+                                <input type="number" id="edge" placeholder="Enter edge length" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+                case 'torus':
+                    inputFields.innerHTML = `
+                        <div class="input-group">
+                            <div>
+                                <label for="radius">Radius</label>
+                                <input type="number" id="radius" placeholder="Enter radius" step="any">
+                            </div>
+                            <div>
+                                <label for="tubeRadius">Tube Radius</label>
+                                <input type="number" id="tubeRadius" placeholder="Enter tube radius" step="any">
+                            </div>
+                        </div>
+                    `;
+                    break;
+            }
+        }
 
-    function calculatePyramid() {
-        const base = document.getElementById("pyramidBase").value;
-        const height = document.getElementById("pyramidHeight").value;
-        const volume = (1/3) * Math.pow(base, 2) * height;
-        const surfaceArea = Math.pow(base, 2) + 2 * base * Math.sqrt(Math.pow(height, 2) + Math.pow(base / 2, 2));
-        document.getElementById("pyramidResult").innerText = `Volume: ${volume}, Surface Area: ${surfaceArea}`;
-        document.getElementById("pyramidVolumeFormula").innerText = `1/3 * base² * height`;
-        document.getElementById("pyramidSurfaceAreaFormula").innerText = `base² + 2 * base * slant height`;
-    }
+        function calculate() {
+            const result = document.getElementById('result');
+            const volume = document.getElementById('volume');
+            const surfaceArea = document.getElementById('surfaceArea');
+            let v, sa;
 
-    function calculateTetrahedron() {
-        const edge = document.getElementById("tetrahedronEdge").value;
-        const volume = (Math.pow(edge, 3)) / (6 * Math.sqrt(2));
-        document.getElementById("tetrahedronResult").innerText = `Volume: ${volume}`;
-        document.getElementById("tetrahedronVolumeFormula").innerText = `(edge³) / (6 * √2)`;
-    }
+            switch(currentShape) {
+                case 'cube':
+                    const side = parseFloat(document.getElementById('side').value);
+                    v = Math.pow(side, 3);
+                    sa = 6 * Math.pow(side, 2);
+                    break;
+                case 'sphere':
+                    const radius = parseFloat(document.getElementById('radius').value);
+                    v = (4/3) * Math.PI * Math.pow(radius, 3);
+                    sa = 4 * Math.PI * Math.pow(radius, 2);
+                    break;
+                case 'cylinder':
+                    const cylRadius = parseFloat(document.getElementById('radius').value);
+                    const cylHeight = parseFloat(document.getElementById('height').value);
+                    v = Math.PI * Math.pow(cylRadius, 2) * cylHeight;
+                    sa = 2 * Math.PI * cylRadius * (cylRadius + cylHeight);
+                    break;
+                case 'cone':
+                    const coneRadius = parseFloat(document.getElementById('radius').value);
+                    const coneHeight = parseFloat(document.getElementById('height').value);
+                    v = (1/3) * Math.PI * Math.pow(coneRadius, 2) * coneHeight;
+                    const slantHeight = Math.sqrt(Math.pow(coneRadius, 2) + Math.pow(coneHeight, 2));
+                    sa = Math.PI * coneRadius * (coneRadius + slantHeight);
+                    break;
+                case 'pyramid':
+                    const base = parseFloat(document.getElementById('base').value);
+                    const pyrHeight = parseFloat(document.getElementById('height').value);
+                    v = (1/3) * Math.pow(base, 2) * pyrHeight;
+                    const baseArea = Math.pow(base, 2);
+                    const lateralArea = 2 * base * Math.sqrt(Math.pow(base/2, 2) + Math.pow(pyrHeight, 2));
+                    sa = baseArea + lateralArea;
+                    break;
+                case 'hemisphere':
+                    const hemRadius = parseFloat(document.getElementById('radius').value);
+                    v = (2/3) * Math.PI * Math.pow(hemRadius, 3);
+                    sa = 3 * Math.PI * Math.pow(hemRadius, 2);
+                    break;
+                case 'rectangular-prism':
+                    const length = parseFloat(document.getElementById('length').value);
+                    const width = parseFloat(document.getElementById('width').value);
+                    const height = parseFloat(document.getElementById('height').value);
+                    v = length * width * height;
+                    sa = 2 * (length * width + width * height + height * length);
+                    break;
+                case 'tetrahedron':
+                    const edge = parseFloat(document.getElementById('edge').value);
+                    v = (Math.pow(edge, 3)) / (6 * Math.sqrt(2));
+                    sa = Math.sqrt(3) * Math.pow(edge, 2);
+                    break;
+                case 'torus':
+                    const torusRadius = parseFloat(document.getElementById('radius').value);
+                    const tubeRadius = parseFloat(document.getElementById('tubeRadius').value);
+                    v = 2 * Math.PI * Math.PI * torusRadius * Math.pow(tubeRadius, 2);
+                    sa = 4 * Math.PI * Math.PI * torusRadius * tubeRadius;
+                    break;
+            }
 
-    function calculateHemisphere() {
-        const radius = document.getElementById("hemisphereRadius").value;
-        const volume = (2/3) * Math.PI * Math.pow(radius, 3);
-        const surfaceArea = 3 * Math.PI * Math.pow(radius, 2);
-        document.getElementById("hemisphereResult").innerText = `Volume: ${volume}, Surface Area: ${surfaceArea}`;
-        document.getElementById("hemisphereVolumeFormula").innerText = `2/3 * π * radius³`;
-        document.getElementById("hemisphereSurfaceAreaFormula").innerText = `3 * π * radius²`;
-    }
+            volume.innerHTML = `Volume: ${v.toFixed(2)} cubic units`;
+            surfaceArea.innerHTML = `Surface Area: ${sa.toFixed(2)} square units`;
+            result.style.display = 'block';
+        }
 
-    function calculateTorus() {
-        const radius = document.getElementById("torusRadius").value;
-        const tubeRadius = document.getElementById("torusTubeRadius").value;
-        const volume = 2 * Math.PI * Math.PI * radius * Math.pow(tubeRadius, 2);
-        const surfaceArea = 4 * Math.PI * Math.PI * radius * tubeRadius;
-        document.getElementById("torusResult").innerText = `Volume: ${volume}, Surface Area: ${surfaceArea}`;
-        document.getElementById("torusVolumeFormula").innerText = `2 * π² * radius * tube radius²`;
-        document.getElementById("torusSurfaceAreaFormula").innerText = `4 * π² * radius * tube radius`;
-    }
+        // Initialize with cube inputs
+        updateInputFields();
 </script>
-
 </body>
 </html>

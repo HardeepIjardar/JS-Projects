@@ -1,97 +1,83 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Counter</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 50px;
-      background-color: black;
-    }
-
-    .card{
-        justify-content: center;
-        background-color: white;
-        border-radius: 30px;
-        position: relative;
-        padding: 30px;
-        height: 50%;
-        width: 50%; 
-        margin-left: 20%;
-        margin-top: 10%;
-    }
-
-    h1 {
-      font-size: 3rem;
-      color: #333;
-    }
-
-    #counter {
-      font-size: 4rem;
-      margin: 20px;
-      color: #444;
-    }
-
-    button {
-      font-size: 1.2rem;
-      padding: 10px 20px;
-      margin: 10px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      color: #fff;
-    }
-
-    .increment {
-      background-color: #28a745;
-    }
-
-    .decrement {
-      background-color: #dc3545;
-    }
-
-    .reset {
-      background-color: #007bff;
-    }
-
-    button:hover {
-      opacity: 0.8;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Counter - Hardeep Ijardar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="card">
-        <h1>Counter</h1>
-        <div id="counter">0</div>
-        <button class="increment" onclick="increment()">Increment</button>
-        <button class="decrement" onclick="decrement()">Decrement</button>
-        <button class="reset" onclick="reset()">Reset</button>
-    </div>
-  
-  <script>
-    let count = 0;
+    <header>
+        <div class="name-tag">
+            <img src="media/logo.png" alt="Hardeep Ijardar Logo">
+        </div>
+        <nav>
+            <a href="index.html#projects">Projects</a>
+            <a href="https://www.hardeepijardar.com/#about" target="_blank">About</a>
+            <a href="https://www.hardeepijardar.com/#contact" target="_blank">Contact</a>
+        </nav>
+    </header>
 
-    function updateCounter() {
-      document.getElementById('counter').innerText = count;
-    }
+    <main>
+        <a href="index.html" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Projects
+        </a>
 
-    function increment() {
-      count++;
-      updateCounter();
-    }
+        <div class="project-container fade-in">
+            <h1>Simple Counter</h1>
+            <p>A clean and interactive counter that you can increase, decrease, and reset using JavaScript.</p>
 
-    function decrement() {
-      count--;
-      updateCounter();
-    }
+            <div class="card" style="max-width: 400px; margin: 40px auto; text-align: center;">
+                <h2 id="counter">0</h2>
+                <div style="display: flex; gap: 10px; justify-content: center;">
+                    <button onclick="decrease()" class="fade-in" style="animation-delay: 0.2s;">
+                        <i class="fas fa-minus"></i> Decrease
+                    </button>
+                    <button onclick="reset()" class="fade-in" style="animation-delay: 0.3s;">
+                        <i class="fas fa-redo"></i> Reset
+                    </button>
+                    <button onclick="increase()" class="fade-in" style="animation-delay: 0.4s;">
+                        <i class="fas fa-plus"></i> Increase
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
 
-    function reset() {
-      count = 0;
-      updateCounter();
-    }
-  </script>
+    <footer>
+        <div class="social-links">
+            <a href="#" target="_blank"><i class="fab fa-github"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-linkedin"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="#" target="_blank"><i class="fab fa-instagram"></i></a>
+        </div>
+        <p>&copy; 2024 Hardeep Ijardar. All rights reserved.</p>
+    </footer>
+
+    <script>
+        let count = 0;
+        const counterDisplay = document.getElementById('counter');
+
+        function updateDisplay() {
+            counterDisplay.textContent = count;
+            counterDisplay.style.color = count > 0 ? '#4f46e5' : count < 0 ? '#ef4444' : '#ffffff';
+        }
+
+        function increase() {
+            count++;
+            updateDisplay();
+        }
+
+        function decrease() {
+            count--;
+            updateDisplay();
+        }
+
+        function reset() {
+            count = 0;
+            updateDisplay();
+        }
+    </script>
 </body>
 </html>
